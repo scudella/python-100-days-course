@@ -1,7 +1,11 @@
 from tkinter import *
 import math
 
-from pyanaconda.core import timer
+def raise_and_focus(window):
+    window.attributes('-topmost', True) # Bring to front and stay temporarily
+    window.update_idletasks() # Ensures window manager has time to process the command
+    window.attributes('-topmost', False) # Allow other windows to cover it later
+    window.focus_force() # Force the window to take focus
 
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -38,9 +42,11 @@ def start_timer():
     if reps % 8 == 0:
         count_down(long_break_sec)
         time_label.config(text='Break', fg=RED)
+        window.after_idle(raise_and_focus, window)
     elif reps % 2 == 0:
         count_down(short_break_sec)
         time_label.config(text='Break', fg=PINK)
+        window.after_idle(raise_and_focus, window)
     else:
         count_down(work_sec)
         time_label.config(text='Work', fg=GREEN)
