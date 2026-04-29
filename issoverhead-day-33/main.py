@@ -2,6 +2,7 @@ import requests
 from datetime import datetime
 import smtplib
 import time
+import os
 
 LATITUDE = -22.9056
 LONGITUDE = -47.0608
@@ -10,9 +11,9 @@ sunrise_day = 0
 sunrise = 0
 sunset = 0
 
-my_email = "test@gmail.com"
-password = ""
-to_email = "test@hotmail.com"
+my_email = os.environ.get("OWN_EMAIL")
+password = os.environ.get("OWN_PASSWORD")
+to_email = os.environ.get("TO_EMAIL")
 
 def iss_position():
     try:
