@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ data.name }} — Portfolio</title>
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="container nav-content">
+        <a href="#" class="brand">@{{ data.handle }}</a>
+        <nav>
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section id="about" class="hero container">
+        <div class="hero-text">
+          <p class="eyebrow">{{ data.location }}</p>
+          <h1>{{ data.name }}</h1>
+          <h2>{{ data.role }}</h2>
+          <p class="bio">{{ data.about }}</p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">View Projects</a>
+            <a href="mailto:{{ data.email }}" class="btn btn-outline"
+              >Get in Touch</a
+            >
+          </div>
+        </div>
+        <div class="hero-avatar">
+          <img
+            src="{{ data.avatar_url }}"
+            alt="{{ data.name }}"
+            onerror="
+              this.style.display = 'none';
+              document.getElementById('avatar-fallback').style.display = 'flex';
+            "
+          />
+          <div
+            id="avatar-fallback"
+            class="avatar-placeholder"
+            style="display: none"
+          >
+            EL
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="section container">
+        <h3 class="section-title">Technical Stack</h3>
+        <div class="grid-3">
+          {% for group in data.skills %}
+          <div class="card">
+            <h4>{{ group.category }}</h4>
+            <div class="tag-list">
+              {% for item in group.skills %}
+              <span class="tag">{{ item }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects" class="section container">
+        <h3 class="section-title">Featured Projects</h3>
+        <div class="grid-3">
+          {% for project in data.projects %}
+          <article class="card project-card">
+            {% if project.image_url %}
+            <img
+              src="{{ project.image_url }}"
+              alt="{{ project.title }}"
+              class="project-thumb"
+            />
+            {% endif %}
+            <div class="project-body">
+              <h4>{{ project.title }}</h4>
+              <p>{{ project.description }}</p>
+              <div class="tag-list">
+                {% for tag in project.tags %}
+                <span class="tag tag-subtle">{{ tag }}</span>
+                {% endfor %}
+              </div>
+              <a
+                href="{{ project.live_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="project-link"
+              >
+                Visit Live Project &rarr;
+              </a>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="section container contact-box">
+        <h3>Let's Connect</h3>
+        <p>
+          Interested in collaborating or discussing full-stack architecture and
+          cloud infrastructure?
+        </p>
+        <div class="contact-links">
+          <a href="mailto:{{ data.email }}" class="btn btn-primary"
+            >{{ data.email }}</a
+          >
+          <a
+            href="{{ data.github }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline"
+            >GitHub</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; {{ current_year }} {{ data.name }}. Built with Python &amp;
+          Flask.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
