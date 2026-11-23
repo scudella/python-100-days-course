@@ -9,7 +9,7 @@ BACKGROUND_COLOR = "#B1DDC6"
 flip_timer = ''
 
 try:
-    data = pandas.read_csv("words_to_learn.csv")
+    data = pandas.read_csv("data/words_to_learn.csv")
 except FileNotFoundError:
     data = pandas.read_csv("data/italian_words.csv")
 
