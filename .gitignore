@@ -4,3 +4,5 @@
 __pycache__
 variables.sh
 token.txt
+
+.ipynb_checkpoints/
