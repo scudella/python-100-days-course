@@ -52,7 +52,7 @@ timmy.shape("turtle")
 # timmy.color("green4")
 
 # draw_square(timmy, 100, "red")
-# draw_dashed_line(timmy, 10, 15, "green4")
+# draw_dashed_line(timmy, 10, 15)
 screen = Screen()
 screen.colormode(255)
 
