@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -5,8 +6,10 @@ from sqlalchemy import Integer, String, Boolean
 import random
 from sqlalchemy.exc import IntegrityError
 
-app = Flask(__name__)
+# Always point to the root folder containing main.py
+basedir = os.path.abspath(os.path.dirname(__file__))
 
+app = Flask(__name__, instance_path=os.path.join(basedir, "instance"))
 
 # CREATE DB
 class Base(DeclarativeBase):
@@ -14,7 +17,7 @@ class Base(DeclarativeBase):
 
 
 # Connect to Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.join(app.instance_path, 'cafes.db')}"
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
