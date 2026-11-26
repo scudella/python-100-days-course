@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Todo App</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f4f4f9;
+            color: #222;
+            max-width: 540px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .add-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .add-form input[type="text"] {
+            flex: 1;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .add-form input[type="submit"] {
+            padding: 0.6rem 1.2rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .add-form input[type="submit"]:hover {
+            background: #1d4ed8;
+        }
+        .error {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 1.5rem;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        }
+        .todo-title {
+            flex: 1;
+            margin: 0 0.75rem;
+            word-break: break-word;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .btn-icon {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.25rem 0.55rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .btn-delete {
+            color: #dc2626;
+            border-color: #fca5a5;
+        }
+        .btn-delete:hover {
+            background: #fee2e2;
+        }
+        .empty {
+            text-align: center;
+            color: #666;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Todo List</h1>
+
+    <form method="POST" action="{{ url_for('index') }}" class="add-form" novalidate>
+        {{ form.hidden_tag() }}
+        {{ form.title() }}
+        {{ form.submit() }}
+    </form>
+
+    {% for error in form.title.errors %}
+        <div class="error">{{ error }}</div>
+    {% endfor %}
+
+    {% if todos %}
+        <ul>
+            {% for todo in todos %}
+                <li>
+                    <form method="POST" action="{{ url_for('toggle', todo_id=todo.id) }}">
+                        {{ action_form.hidden_tag() }}
+                        <button type="submit" class="btn-icon" title="Toggle complete">
+                            {{ "✓" if todo.completed else "○" }}
+                        </button>
+                    </form>
+
+                    <span class="todo-title {{ 'completed' if todo.completed else '' }}">
+                        {{ todo.title }}
+                    </span>
+
+                    <form method="POST" action="{{ url_for('delete', todo_id=todo.id) }}">
+                        {{ action_form.hidden_tag() }}
+                        <button type="submit" class="btn-icon btn-delete" title="Delete task">
+                            Delete
+                        </button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="empty">No tasks yet. Add one above!</p>
+    {% endif %}
+</body>
+</html>
